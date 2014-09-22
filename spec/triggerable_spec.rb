@@ -225,13 +225,13 @@ describe Triggerable do
   end
 
   context 'actions' do
-    it 'custom action' do
-      class CreateFollowUp < Action
-        def run_for! task
-          TestTask.create kind: 'follow up'
-        end
+    class CreateFollowUp < Triggerable::Action
+      def run_for! task
+        TestTask.create kind: 'follow up'
       end
+    end
 
+    it 'custom action' do
       TestTask.trigger on: :update, if: {status: 'solved'}, do: :create_follow_up
 
       task = TestTask.create
@@ -243,12 +243,6 @@ describe Triggerable do
     end
 
     it 'custom action chain' do
-      class CreateFollowUp < Action
-        def run_for! task
-          TestTask.create kind: 'follow up'
-        end
-      end
-
       TestTask.trigger on: :update, if: {status: 'solved'}, do: [:create_follow_up, :create_follow_up]
 
       task = TestTask.create

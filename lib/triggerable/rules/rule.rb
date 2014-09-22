@@ -5,7 +5,7 @@ module Rules
     def initialize model, options, block
       @model     = model
       @condition = Conditions::Condition.build(options[:if])
-      @actions   = Action.build(block || options[:do])
+      @actions   = Triggerable::Action.build(block || options[:do])
     end
   end
 end

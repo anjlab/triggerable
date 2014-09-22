@@ -64,6 +64,20 @@ trigger on: :update, if: -> (user) { user.orders.any? } do
 end
 ```
 
+If you need to share logic between triggers/automations bodies you can move it into separate class. It should be inherited from `Triggerable::Action` and implement a single method `run_for!(obj)` where obj is a triggered object. Then you can pass a name of your action class instead of do block.
+
+```ruby
+class SendWelcomeSms < Triggerable::Action
+  def run_for! object
+    SmsGateway.send_to object.phone, welcome_text
+  end
+end
+
+class User
+  trigger on: :create, if: {receives_sms: true}, do: :send_welcome_sms
+end
+```
+
 ## Contributing
 
 1. Fork it
