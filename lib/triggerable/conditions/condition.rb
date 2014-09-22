@@ -7,18 +7,10 @@ module Conditions
       key = condition.keys.first
       value = condition[key]
 
-      case key
-      when :and, :or
-        condition_class(key).new(value)
+      if [:and, :or].include?(key)
+        predicate_condition(key, value)
       else
-        if value.is_a?(Array)
-          Conditions::In.new(key, value)
-        elsif !value.is_a?(Hash)
-          Conditions::Is.new(key, value)
-        else
-          condition_klass = condition_class(value.keys.first)
-          condition_klass.new(key, value.values.first)
-        end
+        field_condition(key, value)
       end
     end
 
@@ -27,6 +19,20 @@ module Conditions
     def scope; ''; end
 
     private
+
+    def self.predicate_condition class_name, value
+      condition_class(class_name).new(value)
+    end
+
+    def self.field_condition field, value
+      if value.is_a?(Array)
+        Conditions::In.new(field, value)
+      elsif value.is_a?(Hash)
+        condition_class(value.keys.first).new(field, value.values.first)
+      else
+        Conditions::Is.new(field, value)
+      end
+    end
 
     def self.condition_class sym
       "Conditions::#{sym.to_s.camelize}".constantize
