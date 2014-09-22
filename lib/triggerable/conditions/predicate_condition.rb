@@ -1,5 +1,7 @@
 module Conditions
   class PredicateCondition < Condition
+    attr_accessor :conditions
+
     def initialize statements
       @conditions = statements.map do |hash|
         field = hash.keys.first

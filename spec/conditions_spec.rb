@@ -151,4 +151,52 @@ describe Conditions do
       it('string') { expect(scope(['1', '2', '3'])).to eq("field IN ('1','2','3')") }
     end
   end
+
+  context 'predicates' do
+    class TrueCondition
+      def true_for?(object); true; end
+    end
+
+    class FalseCondition
+      def true_for?(object); false; end
+    end
+
+    context 'and' do
+      before(:each) { @and_condition = Conditions::And.new([]) }
+
+      it ('true + true') do
+        @and_condition.conditions = [TrueCondition.new, TrueCondition.new]
+        expect(@and_condition.true_for?(@obj)).to be_truthy
+      end
+
+      it ('true + false') do
+        @and_condition.conditions = [TrueCondition.new, FalseCondition.new]
+        expect(@and_condition.true_for?(@obj)).to be_falsy
+      end
+
+      it ('true + false') do
+        @and_condition.conditions = [FalseCondition.new, FalseCondition.new]
+        expect(@and_condition.true_for?(@obj)).to be_falsy
+      end
+    end
+
+    context 'or' do
+      before(:each) { @or_condition = Conditions::Or.new([]) }
+
+      it ('true + true') do
+        @or_condition.conditions = [TrueCondition.new, TrueCondition.new]
+        expect(@or_condition.true_for?(@obj)).to be_truthy
+      end
+
+      it ('true + false') do
+        @or_condition.conditions = [TrueCondition.new, FalseCondition.new]
+        expect(@or_condition.true_for?(@obj)).to be_truthy
+      end
+
+      it ('true + false') do
+        @or_condition.conditions = [FalseCondition.new, FalseCondition.new]
+        expect(@or_condition.true_for?(@obj)).to be_falsy
+      end
+    end
+  end
 end
