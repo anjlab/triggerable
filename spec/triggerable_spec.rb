@@ -146,7 +146,7 @@ describe Triggerable do
     it 'after' do
       constantize_time_now Time.utc 2012, 9, 1, 12, 00
 
-      TestTask.automation if: {and: [{status: {is: :solved}}, {kind: {is: :service}}]}, after: {update: 24} do
+      TestTask.automation if: {updated_at: {after: 24}, and: [{status: {is: :solved}}, {kind: {is: :service}}]} do
         TestTask.create kind: 'follow up'
       end
 
@@ -169,7 +169,7 @@ describe Triggerable do
     it 'before' do
       constantize_time_now Time.utc 2012, 9, 1, 12, 00
 
-      TestTask.automation if: {and: [{status: {is: :solved}}, {kind: {is: :service}}]}, before: {schedule: 2} do
+      TestTask.automation if: {scheduled_at: {before: 2}, and: [{status: {is: :solved}}, {kind: {is: :service}}]} do
         TestTask.create kind: 'follow up'
       end
 

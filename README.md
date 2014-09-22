@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
     user.send_welcome_sms
   end
 
-  automation if: {confirmed: false}, after: {create: 24} do |user|
+  automation if: {created_at: {after: 24}, confirmed: false} do |user|
     user.send_confirmation_email
   end
 end
