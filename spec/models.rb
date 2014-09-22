@@ -1,9 +1,7 @@
 require 'active_record'
 
 class TestTask < ActiveRecord::Base
-  include Triggerable
 end
-
 
 # class ParentModel < ActiveRecord::Base
 #   include ARTriggers::Automated

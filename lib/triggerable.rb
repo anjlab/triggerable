@@ -54,3 +54,5 @@ module Triggerable
     end
   end
 end
+
+ActiveSupport.on_load(:active_record) { include Triggerable }

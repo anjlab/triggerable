@@ -24,8 +24,6 @@ Setup and defining trigger and automation:
 
 ```ruby
 class User < ActiveRecord::Base
-  include Triggerable
-
   trigger on: :create, if: {receives_sms: true}, do |user|
     user.send_welcome_sms
   end
