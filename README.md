@@ -1,5 +1,7 @@
 # Triggerable
 
+[![Code Climate](https://codeclimate.com/github/anjlab/triggerable/badges/gpa.svg)](https://codeclimate.com/github/anjlab/triggerable)
+
 Triggerable is a powerful engine for adding a conditional behaviour for ActiveRecord models. This logic can be defined in two ways - as triggers and automations. Triggers are called right after model creating, updating or saving, and automations are run on schedule (e.g. 2 hours after update).
 
 ## Installation
