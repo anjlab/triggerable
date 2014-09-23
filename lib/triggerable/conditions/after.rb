@@ -1,9 +1,9 @@
 module Conditions
   class After < ScheduleCondition
     def scope
-      from = (now - (@hours + 1).hours).to_formatted_s(:db)
-      to = (now - @hours.hours).to_formatted_s(:db)
-      { @date => from..to }
+      from = (now - (@value + 1).hours).to_formatted_s(:db)
+      to = (now - @value.hours).to_formatted_s(:db)
+      { @field => from..to }
     end
   end
 end
