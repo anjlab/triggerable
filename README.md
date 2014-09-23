@@ -56,6 +56,8 @@ trigger on: :create, if: {and: [{field1: '1'}, {field2: 1}]}, ...
 trigger on: :create, if: {or: [{field1: '1'}, {field2: 1}]}, ...
 ```
 
+Triggerable does not run automations by itself, you should call `Engine.run_automations(interval)` using any scheduling script. Interval is a time difference between calling the method (e.g. `1.hour`). *You should avoid situations when your interval is less then the time your automations need to complete!*
+
 If you have more complex condition or need to check associations (not supported in DSL now), you should use a lambda condition form:
 
 ```ruby

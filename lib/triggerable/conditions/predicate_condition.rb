@@ -2,11 +2,16 @@ module Conditions
   class PredicateCondition < Condition
     attr_accessor :conditions
 
-    def initialize statements
-      @conditions = statements.map do |hash|
-        field = hash.keys.first
-        statement = hash.values.first
-        Condition.build({field => statement})
+    def initialize conditions
+      @conditions = conditions.map do |condition|
+        unless condition.is_a?(Hash)
+          condition
+        else
+          field     = condition.keys.first
+          statement = condition.values.first
+
+          Condition.build({field => statement})
+        end
       end
     end
 
