@@ -146,7 +146,7 @@ describe Triggerable do
     it 'after' do
       constantize_time_now Time.utc 2012, 9, 1, 12, 00
 
-      TestTask.automation if: {updated_at: {after: 24}, and: [{status: {is: :solved}}, {kind: {is: :service}}]} do
+      TestTask.automation if: {updated_at: {after: 24.hours}, and: [{status: {is: :solved}}, {kind: {is: :service}}]} do
         TestTask.create kind: 'follow up'
       end
 
@@ -156,11 +156,11 @@ describe Triggerable do
       expect(TestTask.count).to eq(1)
 
       constantize_time_now Time.utc 2012, 9, 1, 20, 00
-      Engine.run_automations
+      Engine.run_automations(1.hour)
       expect(TestTask.count).to eq(1)
 
       constantize_time_now Time.utc 2012, 9, 2, 13, 00
-      Engine.run_automations
+      Engine.run_automations(1.hour)
 
       expect(TestTask.count).to eq(2)
       expect(TestTask.all.last.kind).to eq('follow up')
@@ -169,7 +169,7 @@ describe Triggerable do
     it 'before' do
       constantize_time_now Time.utc 2012, 9, 1, 12, 00
 
-      TestTask.automation if: {scheduled_at: {before: 2}, and: [{status: {is: :solved}}, {kind: {is: :service}}]} do
+      TestTask.automation if: {scheduled_at: {before: 2.hours}, and: [{status: {is: :solved}}, {kind: {is: :service}}]} do
         TestTask.create kind: 'follow up'
       end
 
@@ -179,11 +179,11 @@ describe Triggerable do
       expect(TestTask.count).to eq(1)
 
       constantize_time_now Time.utc 2012, 9, 1, 15, 00
-      Engine.run_automations
+      Engine.run_automations(1.hour)
       expect(TestTask.count).to eq(1)
 
       constantize_time_now Time.utc 2012, 9, 1, 18, 00
-      Engine.run_automations
+      Engine.run_automations(1.hour)
       expect(TestTask.count).to eq(2)
       expect(TestTask.all.last.kind).to eq('follow up')
     end

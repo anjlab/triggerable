@@ -1,5 +1,5 @@
 class Engine
-  cattr_accessor :triggers, :automations
+  cattr_accessor :triggers, :automations, :interval
 
   self.triggers = []
   self.automations = []
@@ -16,7 +16,8 @@ class Engine
     triggers.select{|t| t.model == model && t.callback == callback }
   end
 
-  def self.run_automations
+  def self.run_automations interval
+    self.interval = interval
     automations.each(&:execute!)
   end
 
