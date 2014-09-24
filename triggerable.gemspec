@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Triggerable::VERSION
   spec.authors       = ["DmitryTsepelev"]
   spec.email         = ["dmitry.a.tsepelev@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = "Triggers/automations engine"
+  spec.summary       = "Triggerable is a powerful engine for adding a conditional behaviour for ActiveRecord models."
+  spec.homepage      = "https://github.com/anjlab/triggerable"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
