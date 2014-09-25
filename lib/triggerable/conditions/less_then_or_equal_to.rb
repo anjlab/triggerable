@@ -1,15 +1,12 @@
 module Conditions
-  class LessThenOrEqualTo < CompositeCondition
-    def scope
-      "#{@field} <= #{sanitized_value}"
+  class LessThenOrEqualTo < OrEqualTo
+    protected
+    def additional_condition
+      LessThen
     end
 
-    protected
-    def build_condition field, value
-      Or.new [
-        LessThen.new(field, value),
-        Is.new(field, value)
-      ]
+    def comparsion_operator
+      '<'
     end
   end
 end

@@ -1,15 +1,12 @@
 module Conditions
-  class GreaterThenOrEqualTo < CompositeCondition
-    def scope
-      "#{@field} >= #{sanitized_value}"
+  class GreaterThenOrEqualTo < OrEqualTo
+    protected
+    def additional_condition
+      GreaterThen
     end
 
-    protected
-    def build_condition field, value
-      Or.new [
-        GreaterThen.new(field, value),
-        Is.new(field, value)
-      ]
+    def comparsion_operator
+      '>'
     end
   end
 end

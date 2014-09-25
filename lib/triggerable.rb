@@ -18,7 +18,7 @@ require "triggerable/conditions/in"
 require "triggerable/conditions/is"
 require "triggerable/conditions/is_not"
 
-require "triggerable/conditions/composite_condition"
+require "triggerable/conditions/or_equal_to"
 require "triggerable/conditions/greater_then_or_equal_to"
 require "triggerable/conditions/less_then_or_equal_to"
 
