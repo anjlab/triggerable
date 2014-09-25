@@ -3,6 +3,7 @@ module Conditions
     def self.build condition
       return Condition.new if condition.blank?
       return LambdaCondition.new(condition) if condition.is_a?(Proc)
+      return MethodCondition.new(condition) if condition.is_a?(Symbol)
 
       key = condition.keys.first
       value = condition[key]

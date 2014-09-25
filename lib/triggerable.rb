@@ -7,12 +7,10 @@ require "triggerable/rules/trigger"
 require "triggerable/rules/automation"
 
 require "triggerable/conditions/condition"
-require "triggerable/conditions/field_condition"
-require "triggerable/conditions/predicate_condition"
 require "triggerable/conditions/lambda_condition"
-require "triggerable/conditions/schedule_condition"
-require "triggerable/conditions/and"
-require "triggerable/conditions/or"
+require "triggerable/conditions/method_condition"
+
+require "triggerable/conditions/field_condition"
 require "triggerable/conditions/exists"
 require "triggerable/conditions/greater_then"
 require "triggerable/conditions/less_then"
@@ -21,6 +19,12 @@ require "triggerable/conditions/less_then_or_equal_to"
 require "triggerable/conditions/in"
 require "triggerable/conditions/is"
 require "triggerable/conditions/is_not"
+
+require "triggerable/conditions/predicate_condition"
+require "triggerable/conditions/and"
+require "triggerable/conditions/or"
+
+require "triggerable/conditions/schedule_condition"
 require "triggerable/conditions/before"
 require "triggerable/conditions/after"
 

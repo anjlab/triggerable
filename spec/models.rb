@@ -1,6 +1,9 @@
 require 'active_record'
 
 class TestTask < ActiveRecord::Base
+  def solved?
+    status == 'solved'
+  end
 end
 
 # class ParentModel < ActiveRecord::Base

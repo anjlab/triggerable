@@ -222,6 +222,19 @@ describe Triggerable do
       expect(TestTask.count).to eq(4)
       expect(TestTask.all.last.kind).to eq('follow up')
     end
+
+    it 'method call' do
+      TestTask.trigger on: :update, if: :solved? do
+        TestTask.create kind: 'follow up'
+      end
+
+      task = TestTask.create
+      expect(TestTask.count).to eq(1)
+
+      task.update_attributes status: 'solved'
+      expect(TestTask.count).to eq(2)
+      expect(TestTask.all.last.kind).to eq('follow up')
+    end
   end
 
   context 'actions' do
