@@ -4,8 +4,8 @@ module Conditions
       field_value(object) > @value
     end
 
-    def scope
-      "#{@field} > #{sanitized_value}"
+    def comparator
+      '>'
     end
   end
 end

@@ -11,9 +11,5 @@ module Conditions
     def true_for? object
       @condition.true_for?(object)
     end
-
-    def scope
-      "#{@field} #{comparsion_operator}= #{sanitized_value}"
-    end
   end
 end

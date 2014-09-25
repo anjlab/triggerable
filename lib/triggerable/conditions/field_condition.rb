@@ -5,6 +5,10 @@ module Conditions
       @value = value
     end
 
+    def scope
+      "#{@field} #{comparator} #{sanitized_value}"
+    end
+
     protected
     def field_value object
       object.send(@field)

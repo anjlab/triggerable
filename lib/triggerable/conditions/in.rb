@@ -4,8 +4,13 @@ module Conditions
       @value.include?(field_value(object))
     end
 
-    def scope
-      "#{@field} IN (#{sanitized_value.join(',')})"
+    def comparator
+      'IN'
+    end
+
+    private
+    def sanitized_value
+      "(#{super.join(',')})"
     end
   end
 end

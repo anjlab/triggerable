@@ -5,8 +5,8 @@ module Conditions
       LessThen
     end
 
-    def comparsion_operator
-      '<'
+    def comparator
+      '<='
     end
   end
 end
