@@ -8,7 +8,7 @@ describe Triggerable do
 
   context 'triggers' do
     it 'is' do
-      TestTask.trigger on: :update, if: {status: {is: 'solved'}} do
+      TestTask.trigger on: :after_update, if: {status: {is: 'solved'}} do
         TestTask.create kind: 'follow up'
       end
 
@@ -21,7 +21,7 @@ describe Triggerable do
     end
 
     it 'is_not' do
-      TestTask.trigger on: :update, if: {status: {is_not: 'solved'}} do
+      TestTask.trigger on: :after_update, if: {status: {is_not: 'solved'}} do
         TestTask.create kind: 'follow up'
       end
 
@@ -34,7 +34,7 @@ describe Triggerable do
     end
 
     it 'greater_then' do
-      TestTask.trigger on: :update, if: {failure_count: {greater_then: 1}} do
+      TestTask.trigger on: :after_update, if: {failure_count: {greater_then: 1}} do
         TestTask.create kind: 'follow up'
       end
 
@@ -50,7 +50,7 @@ describe Triggerable do
     end
 
     it 'less_then' do
-      TestTask.trigger on: :update, if: {failure_count: {less_then: 2}} do
+      TestTask.trigger on: :after_update, if: {failure_count: {less_then: 2}} do
         TestTask.create kind: 'follow up'
       end
 
@@ -63,7 +63,7 @@ describe Triggerable do
     end
 
     it 'exists' do
-      TestTask.trigger on: :update, if: {failure_count: {exists: true}} do
+      TestTask.trigger on: :after_update, if: {failure_count: {exists: true}} do
         TestTask.create kind: 'follow up'
       end
 
@@ -76,7 +76,7 @@ describe Triggerable do
     end
 
     it 'and' do
-      TestTask.trigger on: :update, if: {and: [{status: {is: 'solved'}}, {kind: {is: 'service'}}]} do
+      TestTask.trigger on: :after_update, if: {and: [{status: {is: 'solved'}}, {kind: {is: 'service'}}]} do
         TestTask.create kind: 'follow up'
       end
 
@@ -89,7 +89,7 @@ describe Triggerable do
     end
 
     it 'or' do
-      TestTask.trigger on: :update, if: {or: [{status: {is: 'solved'}}, {kind: {is: 'service'}}]} do
+      TestTask.trigger on: :after_update, if: {or: [{status: {is: 'solved'}}, {kind: {is: 'service'}}]} do
         TestTask.create kind: 'follow up'
       end
 
@@ -109,7 +109,7 @@ describe Triggerable do
     end
 
     it 'in' do
-      TestTask.trigger on: :update, if: {status: {in: ['solved', 'confirmed']}} do
+      TestTask.trigger on: :after_update, if: {status: {in: ['solved', 'confirmed']}} do
         TestTask.create kind: 'follow up'
       end
 
@@ -129,7 +129,7 @@ describe Triggerable do
     end
 
     it 'lambda' do
-      TestTask.trigger on: :update, if: -> (task) { task.status == 'solved' && task.kind == 'service' } do
+      TestTask.trigger on: :after_update, if: -> (task) { task.status == 'solved' && task.kind == 'service' } do
         TestTask.create kind: 'follow up'
       end
 
@@ -191,7 +191,7 @@ describe Triggerable do
 
   context 'short syntax' do
     it 'is' do
-      TestTask.trigger on: :update, if: {status: 'solved'} do
+      TestTask.trigger on: :after_update, if: {status: 'solved'} do
         TestTask.create kind: 'follow up'
       end
 
@@ -204,7 +204,7 @@ describe Triggerable do
     end
 
     it 'in' do
-      TestTask.trigger on: :update, if: {status: ['solved', 'confirmed']} do
+      TestTask.trigger on: :after_update, if: {status: ['solved', 'confirmed']} do
         TestTask.create kind: 'follow up'
       end
 
@@ -224,7 +224,7 @@ describe Triggerable do
     end
 
     it 'method call' do
-      TestTask.trigger on: :update, if: :solved? do
+      TestTask.trigger on: :after_update, if: :solved? do
         TestTask.create kind: 'follow up'
       end
 
@@ -245,7 +245,7 @@ describe Triggerable do
     end
 
     it 'custom action' do
-      TestTask.trigger on: :update, if: {status: 'solved'}, do: :create_follow_up
+      TestTask.trigger on: :after_update, if: {status: 'solved'}, do: :create_follow_up
 
       task = TestTask.create
       expect(TestTask.count).to eq(1)
@@ -256,7 +256,7 @@ describe Triggerable do
     end
 
     it 'custom action chain' do
-      TestTask.trigger on: :update, if: {status: 'solved'}, do: [:create_follow_up, :create_follow_up]
+      TestTask.trigger on: :after_update, if: {status: 'solved'}, do: [:create_follow_up, :create_follow_up]
 
       task = TestTask.create
       expect(TestTask.count).to eq(1)

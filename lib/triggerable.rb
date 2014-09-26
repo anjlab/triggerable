@@ -36,12 +36,11 @@ module Triggerable
   extend ActiveSupport::Concern
 
   included do
-    CALLBACKS = [:create, :save, :update]
+    CALLBACKS = [:before_create, :before_save, :before_update, :after_create, :after_save, :after_update]
     CALLBACKS.each do |callback|
-      ar_callback = "after_#{callback}".to_sym
-      method_name = "run_#{ar_callback}_triggers"
+      method_name = "run_#{callback}_triggers"
       define_method(method_name) { run_triggers(callback) }
-      send(ar_callback, method_name)
+      send(callback, method_name)
     end
 
     private
