@@ -9,12 +9,10 @@ module Conditions
     end
 
     protected
-    def now
-      Time.now.beginning_of_hour
-    end
-
-    def format date
-      date.to_formatted_s(:db)
+    # automation_time is Time.now rounded by Engine.interval
+    def automation_time
+      i = Engine.interval
+      Time.at((Time.now.to_i/i)*i).utc
     end
 
     def condition

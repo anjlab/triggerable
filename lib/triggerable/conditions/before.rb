@@ -1,16 +1,11 @@
 module Conditions
   class Before < ScheduleCondition
     def from
-      build_time
+      automation_time + @value
     end
 
     def to
-      build_time(Engine.interval)
-    end
-
-    private
-    def build_time add = nil
-      format([now, @value, add].compact.sum)
+      automation_time + @value + Engine.interval
     end
   end
 end
