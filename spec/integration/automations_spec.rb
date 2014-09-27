@@ -194,4 +194,39 @@ describe 'Automations' do
     Engine.run_automations(15.minutes)
     expect(TestTask.count).to eq(2)
   end
+
+
+  it 'after greater then 2 hours with 15 minutes interval' do
+    constantize_time_now Time.utc 2012, 9, 1, 11, 55
+
+    TestTask.automation if: {and: [{updated_at: {after: {greater_then: 2.hours}}}, {status: {is: :solved}}, {kind: {is: :service}}]} do
+      TestTask.create kind: 'follow up'
+    end
+
+    task = TestTask.create
+    expect(TestTask.count).to eq(1)
+    task.update_attributes status: 'solved', kind: 'service'
+    expect(TestTask.count).to eq(1)
+
+    constantize_time_now Time.utc 2012, 9, 1, 12, 10
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(1)
+
+    constantize_time_now Time.utc 2012, 9, 1, 12, 25
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(1)
+
+    constantize_time_now Time.utc 2012, 9, 1, 13, 55
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(2)
+    expect(TestTask.all.last.kind).to eq('follow up')
+
+    constantize_time_now Time.utc 2012, 9, 1, 14, 10
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(3)
+
+    constantize_time_now Time.utc 2012, 9, 1, 14, 25
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(4)
+  end
 end
