@@ -13,10 +13,7 @@ require "triggerable/conditions/method_condition"
 require "triggerable/conditions/field/field_condition"
 require "triggerable/conditions/field/exists"
 require "triggerable/conditions/field/in"
-
 require "triggerable/conditions/field/or_equal_to"
-require "triggerable/conditions/field/greater_then_or_equal_to"
-require "triggerable/conditions/field/less_then_or_equal_to"
 
 require "triggerable/conditions/predicate/predicate_condition"
 require "triggerable/conditions/predicate/and"
@@ -55,6 +52,27 @@ module Triggerable
       Engine.automation(self, options, block)
     end
   end
+end
+
+COMPARSIONS = [
+  { name: 'Is',          ancestor: Conditions::FieldCondition, args: { ruby_comparator: '==', db_comparator: '=' }  },
+  { name: 'GreaterThen', ancestor: Conditions::FieldCondition, args: { ruby_comparator: '>',  db_comparator: '>' }  },
+  { name: 'LessThen',    ancestor: Conditions::FieldCondition, args: { ruby_comparator: '<',  db_comparator: '<' }  },
+  { name: 'IsNot',       ancestor: Conditions::FieldCondition, args: { ruby_comparator: '!=', db_comparator: '<>'}  },
+
+  { name: 'GreaterThenOrEqualTo', ancestor: Conditions::OrEqualTo, args: { db_comparator: '>=', additional_condition: 'Conditions::GreaterThen' } },
+  { name: 'LessThenOrEqualTo',    ancestor: Conditions::OrEqualTo, args: { db_comparator: '<=', additional_condition: 'Conditions::LessThen'    } }
+]
+
+COMPARSIONS.each do |desc|
+  klass = Class.new(desc[:ancestor]) do
+    define_method :initialize do |field, value|
+      desc[:args].each_pair { |name, val| instance_variable_set("@#{name}".to_sym, val) }
+      super(field, value)
+    end
+  end
+
+  Conditions.const_set(desc[:name], klass)
 end
 
 ActiveSupport.on_load(:active_record) { include Triggerable }

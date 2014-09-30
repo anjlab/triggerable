@@ -3,7 +3,7 @@ module Conditions
     def initialize field, value
       super
       @condition = Or.new [
-        @additional_condition.new(field, value),
+        @additional_condition.constantize.new(field, value),
         Is.new(field, value)
       ]
     end
