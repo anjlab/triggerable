@@ -6,7 +6,6 @@ module Conditions
     end
 
     def true_for? object
-      puts self.inspect
       field_value(object).send(@ruby_comparator, @value)
     end
 
@@ -29,11 +28,10 @@ module Conditions
   end
 
   SIMPLE_CONDITIONS = [
-    {
-      name:            'Is',
-      ruby_comparator: '==',
-      db_comparator:   '='
-    }
+    { name: 'Is',          ruby_comparator: '==', db_comparator: '='  },
+    { name: 'GreaterThen', ruby_comparator: '>',  db_comparator: '>'  },
+    { name: 'LessThen',    ruby_comparator: '<',  db_comparator: '<'  },
+    { name: 'IsNot',       ruby_comparator: '!=', db_comparator: '<>' }
   ]
 
   SIMPLE_CONDITIONS.each do |desc|

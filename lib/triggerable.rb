@@ -12,11 +12,7 @@ require "triggerable/conditions/method_condition"
 
 require "triggerable/conditions/field/field_condition"
 require "triggerable/conditions/field/exists"
-require "triggerable/conditions/field/greater_then"
-require "triggerable/conditions/field/less_then"
 require "triggerable/conditions/field/in"
-require "triggerable/conditions/field/is"
-require "triggerable/conditions/field/is_not"
 
 require "triggerable/conditions/field/or_equal_to"
 require "triggerable/conditions/field/greater_then_or_equal_to"
