@@ -1,11 +1,12 @@
 module Conditions
   class In < FieldCondition
-    def true_for? object
-      @value.include?(field_value(object))
+    def initialize field, condition
+      super
+      @db_comparator = 'IN'
     end
 
-    def comparator
-      'IN'
+    def true_for? object
+      @value.include?(field_value(object))
     end
 
     private

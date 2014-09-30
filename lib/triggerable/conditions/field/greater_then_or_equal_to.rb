@@ -1,12 +1,9 @@
 module Conditions
   class GreaterThenOrEqualTo < OrEqualTo
-    protected
-    def additional_condition
-      GreaterThen
-    end
-
-    def comparator
-      '>='
+    def initialize field, condition
+      @db_comparator = '>='
+      @additional_condition = GreaterThen
+      super
     end
   end
 end
