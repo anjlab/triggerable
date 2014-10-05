@@ -55,13 +55,13 @@ module Triggerable
 end
 
 COMPARSIONS = [
-  { name: 'Is',          ancestor: Conditions::FieldCondition, args: { ruby_comparator: '==', db_comparator: '=' }  },
-  { name: 'GreaterThen', ancestor: Conditions::FieldCondition, args: { ruby_comparator: '>',  db_comparator: '>' }  },
-  { name: 'LessThen',    ancestor: Conditions::FieldCondition, args: { ruby_comparator: '<',  db_comparator: '<' }  },
-  { name: 'IsNot',       ancestor: Conditions::FieldCondition, args: { ruby_comparator: '!=', db_comparator: '<>'}  },
+  { name: 'Is',          ancestor: Conditions::FieldCondition, args: { ruby_comparator: '==', db_comparator: 'eq' }  },
+  { name: 'GreaterThen', ancestor: Conditions::FieldCondition, args: { ruby_comparator: '>',  db_comparator: 'gt' }  },
+  { name: 'LessThen',    ancestor: Conditions::FieldCondition, args: { ruby_comparator: '<',  db_comparator: 'lt' }  },
+  { name: 'IsNot',       ancestor: Conditions::FieldCondition, args: { ruby_comparator: '!=', db_comparator: 'not_eq'}  },
 
-  { name: 'GreaterThenOrEqualTo', ancestor: Conditions::OrEqualTo, args: { db_comparator: '>=', additional_condition: 'Conditions::GreaterThen' } },
-  { name: 'LessThenOrEqualTo',    ancestor: Conditions::OrEqualTo, args: { db_comparator: '<=', additional_condition: 'Conditions::LessThen'    } }
+  { name: 'GreaterThenOrEqualTo', ancestor: Conditions::OrEqualTo, args: { db_comparator: 'gteq', additional_condition: 'Conditions::GreaterThen' } },
+  { name: 'LessThenOrEqualTo',    ancestor: Conditions::OrEqualTo, args: { db_comparator: 'lteq', additional_condition: 'Conditions::LessThen'    } }
 ]
 
 COMPARSIONS.each do |desc|

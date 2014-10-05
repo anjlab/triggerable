@@ -2,7 +2,7 @@ module Conditions
   class In < FieldCondition
     def initialize field, condition
       super
-      @db_comparator = 'IN'
+      @db_comparator = 'in'
     end
 
     def true_for? object

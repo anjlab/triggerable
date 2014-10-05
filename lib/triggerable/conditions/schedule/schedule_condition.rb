@@ -13,8 +13,8 @@ module Conditions
       condition.true_for?(object)
     end
 
-    def scope
-      condition.scope
+    def scope table
+      condition.scope(table)
     end
 
     protected

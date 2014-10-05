@@ -6,13 +6,10 @@ class TestTask < ActiveRecord::Base
   end
 end
 
-# class ParentModel < ActiveRecord::Base
-#   include ARTriggers::Automated
-#   automate
+class ParentModel < ActiveRecord::Base
+  has_many :child_models
+end
 
-#   has_many :child_models
-# end
-
-# class ChildModel < ActiveRecord::Base
-#   belongs_to :parent_model
-# end
+class ChildModel < ActiveRecord::Base
+  belongs_to :parent_model
+end

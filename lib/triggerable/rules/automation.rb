@@ -1,7 +1,12 @@
 module Rules
   class Automation < Rule
     def execute!
-      models = model.where(@condition.scope)
+      table = Arel::Table.new(model.table_name)
+      scope = @condition.scope(table)
+      query = table.where(scope).project(Arel.sql('id')).to_sql
+      ids = ParentModel.connection.execute(query).map { |r| r['id'] }
+      models = model.where(id: ids)
+
       models.each {|o| actions.each {|a| a.run_for!(o)} }
     end
   end

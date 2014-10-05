@@ -15,11 +15,27 @@ module Conditions
       end
     end
 
-    def scope
-      @conditions.map(&:scope).join(" #{self.class.name.demodulize.upcase} ")
+    def scope table
+      predicate_scope = nil
+
+      @conditions.each_with_index do |condition, index|
+        condition_scope = condition.scope(table)
+
+        predicate_scope = if index.zero?
+          condition_scope
+        else
+          predicate_scope.send(predicate_name, condition_scope)
+        end
+      end
+
+      predicate_scope
     end
 
     protected
+
+    def predicate_name
+      self.class.name.demodulize.downcase
+    end
 
     def true_conditions object
       @conditions.select {|c| c.true_for?(object) }

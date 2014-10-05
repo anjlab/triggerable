@@ -16,27 +16,20 @@ describe Conditions do
       Conditions::Is.new(:field, value).scope
     end
 
-    context 'true_for' do
-      it 'integer' do
-        @obj.field = 1
-        expect(check_value(1)).to be_truthy
+    it 'integer' do
+      @obj.field = 1
+      expect(check_value(1)).to be_truthy
 
-        @obj.field = 2
-        expect(check_value(1)).to be_falsy
-      end
-
-      it 'string' do
-        @obj.field = '1'
-        expect(check_value('1')).to be_truthy
-
-        @obj.field = '2'
-        expect(check_value('1')).to be_falsy
-      end
+      @obj.field = 2
+      expect(check_value(1)).to be_falsy
     end
 
-    context 'scope' do
-      it('integer') { expect(scope(1)).to eq("field = 1") }
-      it('string')  { expect(scope('1')).to eq("field = '1'") }
+    it 'string' do
+      @obj.field = '1'
+      expect(check_value('1')).to be_truthy
+
+      @obj.field = '2'
+      expect(check_value('1')).to be_falsy
     end
   end
 
@@ -50,27 +43,20 @@ describe Conditions do
       Conditions::IsNot.new(:field, value).scope
     end
 
-    context 'true_for' do
-      it 'integer' do
-        @obj.field = 1
-        expect(check_value(2)).to be_truthy
+    it 'integer' do
+      @obj.field = 1
+      expect(check_value(2)).to be_truthy
 
-        @obj.field = 2
-        expect(check_value(2)).to be_falsy
-      end
-
-      it 'string' do
-        @obj.field = '1'
-        expect(check_value('2')).to be_truthy
-
-        @obj.field = '2'
-        expect(check_value('2')).to be_falsy
-      end
+      @obj.field = 2
+      expect(check_value(2)).to be_falsy
     end
 
-    context 'scope' do
-      it('integer') { expect(scope(1)).to eq("field <> 1") }
-      it('string')  { expect(scope('1')).to eq("field <> '1'") }
+    it 'string' do
+      @obj.field = '1'
+      expect(check_value('2')).to be_truthy
+
+      @obj.field = '2'
+      expect(check_value('2')).to be_falsy
     end
   end
 
@@ -83,29 +69,22 @@ describe Conditions do
       Conditions::GreaterThen.new(:field, value).scope
     end
 
-    context 'true_for' do
-      it 'integer' do
-        @obj.field = 1
+    it 'integer' do
+      @obj.field = 1
 
-        expect(check_value(-1)).to be_truthy
-        expect(check_value(0)).to  be_truthy
-        expect(check_value(1)).to  be_falsy
-        expect(check_value(2)).to  be_falsy
-      end
-
-      it 'float' do
-        @obj.field = 1.0
-
-        expect(check_value(0)).to   be_truthy
-        expect(check_value(0.9)).to be_truthy
-        expect(check_value(1.1)).to be_falsy
-        expect(check_value(2)).to   be_falsy
-      end
+      expect(check_value(-1)).to be_truthy
+      expect(check_value(0)).to  be_truthy
+      expect(check_value(1)).to  be_falsy
+      expect(check_value(2)).to  be_falsy
     end
 
-    context 'scope' do
-      it('integer') { expect(scope(1)).to   eq("field > 1")   }
-      it('float')   { expect(scope(1.2)).to eq("field > 1.2") }
+    it 'float' do
+      @obj.field = 1.0
+
+      expect(check_value(0)).to   be_truthy
+      expect(check_value(0.9)).to be_truthy
+      expect(check_value(1.1)).to be_falsy
+      expect(check_value(2)).to   be_falsy
     end
   end
 
@@ -118,29 +97,22 @@ describe Conditions do
       Conditions::LessThen.new(:field, value).scope
     end
 
-    context 'true_for' do
-      it 'integer' do
-        @obj.field = 1
+    it 'integer' do
+      @obj.field = 1
 
-        expect(check_value(-1)).to be_falsy
-        expect(check_value(0)).to  be_falsy
-        expect(check_value(1)).to  be_falsy
-        expect(check_value(2)).to  be_truthy
-      end
-
-      it 'float' do
-        @obj.field = 1.0
-
-        expect(check_value(0)).to   be_falsy
-        expect(check_value(0.9)).to be_falsy
-        expect(check_value(1.1)).to be_truthy
-        expect(check_value(2)).to   be_truthy
-      end
+      expect(check_value(-1)).to be_falsy
+      expect(check_value(0)).to  be_falsy
+      expect(check_value(1)).to  be_falsy
+      expect(check_value(2)).to  be_truthy
     end
 
-    context 'scope' do
-      it('integer') { expect(scope(1)).to   eq("field < 1")   }
-      it('float')   { expect(scope(1.2)).to eq("field < 1.2") }
+    it 'float' do
+      @obj.field = 1.0
+
+      expect(check_value(0)).to   be_falsy
+      expect(check_value(0.9)).to be_falsy
+      expect(check_value(1.1)).to be_truthy
+      expect(check_value(2)).to   be_truthy
     end
   end
 
@@ -153,36 +125,28 @@ describe Conditions do
       Conditions::In.new(:field, value).scope
     end
 
-    context 'true_for' do
-      it 'integer' do
-        @obj.field = 1
+    it 'integer' do
+      @obj.field = 1
 
-        expect(check_value([0])).to    be_falsy
-        expect(check_value([1])).to    be_truthy
-        expect(check_value([1, 2])).to be_truthy
-      end
-
-      it 'float' do
-        @obj.field = 1.0
-
-        expect(check_value([0.0])).to      be_falsy
-        expect(check_value([1.0])).to      be_truthy
-        expect(check_value([1.0, 2.0])).to be_truthy
-      end
-
-      it 'string' do
-        @obj.field = '1'
-
-        expect(check_value(['0'])).to      be_falsy
-        expect(check_value(['1'])).to      be_truthy
-        expect(check_value(['1', '2'])).to be_truthy
-      end
+      expect(check_value([0])).to    be_falsy
+      expect(check_value([1])).to    be_truthy
+      expect(check_value([1, 2])).to be_truthy
     end
 
-    context 'scope' do
-      it('integer') { expect(scope([1, 2, 3])).to       eq("field IN (1,2,3)")       }
-      it('float')   { expect(scope([1.0, 1.2, 2.3])).to eq("field IN (1.0,1.2,2.3)") }
-      it('string')  { expect(scope(['1', '2', '3'])).to eq("field IN ('1','2','3')") }
+    it 'float' do
+      @obj.field = 1.0
+
+      expect(check_value([0.0])).to      be_falsy
+      expect(check_value([1.0])).to      be_truthy
+      expect(check_value([1.0, 2.0])).to be_truthy
+    end
+
+    it 'string' do
+      @obj.field = '1'
+
+      expect(check_value(['0'])).to      be_falsy
+      expect(check_value(['1'])).to      be_truthy
+      expect(check_value(['1', '2'])).to be_truthy
     end
   end
 

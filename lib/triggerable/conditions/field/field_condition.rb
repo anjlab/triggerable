@@ -9,8 +9,8 @@ module Conditions
       field_value(object).send(@ruby_comparator, @value)
     end
 
-    def scope
-      "#{@field} #{@db_comparator} #{sanitized_value}"
+    def scope table
+      table[@field].send(@db_comparator, @value)
     end
 
     private
