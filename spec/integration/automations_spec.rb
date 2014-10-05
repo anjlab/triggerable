@@ -195,10 +195,10 @@ describe 'Automations' do
     expect(TestTask.count).to eq(2)
   end
 
-  it 'after greater then 2 hours' do
+  it 'after greater than 2 hours' do
     constantize_time_now Time.utc 2012, 9, 1, 11, 55
 
-    TestTask.automation if: {and: [{updated_at: {after: {greater_then: 2.hours}}}, {status: {is: :solved}}, {kind: {is: :service}}]} do
+    TestTask.automation if: {and: [{updated_at: {after: {greater_than: 2.hours}}}, {status: {is: :solved}}, {kind: {is: :service}}]} do
       TestTask.create kind: 'follow up'
     end
 
@@ -229,10 +229,10 @@ describe 'Automations' do
     expect(TestTask.count).to eq(4)
   end
 
-  it 'after less then 2 hours' do
+  it 'after less than 2 hours' do
     constantize_time_now Time.utc 2012, 9, 1, 11, 55
 
-    TestTask.automation if: {and: [{updated_at: {after: {less_then: 2.hours}}}, {status: {is: :solved}}, {kind: {is: :service}}]} do
+    TestTask.automation if: {and: [{updated_at: {after: {less_than: 2.hours}}}, {status: {is: :solved}}, {kind: {is: :service}}]} do
       TestTask.create kind: 'follow up'
     end
 
@@ -263,10 +263,10 @@ describe 'Automations' do
     expect(TestTask.count).to eq(4)
   end
 
-  it 'before greater then 2 hours' do
+  it 'before greater than 2 hours' do
     constantize_time_now Time.utc 2012, 9, 1, 11, 55
 
-    TestTask.automation if: {and: [{scheduled_at: {before: {greater_then: 2.hours}}}, {status: {is: :solved}}, {kind: {is: :service}}]} do
+    TestTask.automation if: {and: [{scheduled_at: {before: {greater_than: 2.hours}}}, {status: {is: :solved}}, {kind: {is: :service}}]} do
       TestTask.create kind: 'follow up'
     end
 
@@ -313,10 +313,10 @@ describe 'Automations' do
     expect(TestTask.count).to eq(4)
   end
 
-  it 'before less then 2 hours' do
+  it 'before less than 2 hours' do
     constantize_time_now Time.utc 2012, 9, 1, 11, 55
 
-    TestTask.automation if: {and: [{scheduled_at: {before: {less_then: 2.hours}}}, {status: {is: :solved}}, {kind: {is: :service}}]} do
+    TestTask.automation if: {and: [{scheduled_at: {before: {less_than: 2.hours}}}, {status: {is: :solved}}, {kind: {is: :service}}]} do
       TestTask.create kind: 'follow up'
     end
 

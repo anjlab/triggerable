@@ -60,13 +60,13 @@ describe Conditions do
     end
   end
 
-  context 'greater_then' do
+  context 'greater_than' do
     def check_value value
-      Conditions::GreaterThen.new(:field, value).true_for?(@obj)
+      Conditions::GreaterThan.new(:field, value).true_for?(@obj)
     end
 
     def scope value
-      Conditions::GreaterThen.new(:field, value).scope
+      Conditions::GreaterThan.new(:field, value).scope
     end
 
     it 'integer' do
@@ -88,13 +88,13 @@ describe Conditions do
     end
   end
 
-  context 'less_then' do
+  context 'less_than' do
     def check_value value
-      Conditions::LessThen.new(:field, value).true_for?(@obj)
+      Conditions::LessThan.new(:field, value).true_for?(@obj)
     end
 
     def scope value
-      Conditions::LessThen.new(:field, value).scope
+      Conditions::LessThan.new(:field, value).scope
     end
 
     it 'integer' do

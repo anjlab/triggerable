@@ -23,13 +23,13 @@ describe 'Scopes' do
       expect(ids).to eq([@m1.id, @m3.id])
     end
 
-    it 'greater then' do
-      ids = model_ids_for(Conditions::GreaterThen, 1)
+    it 'greater than' do
+      ids = model_ids_for(Conditions::GreaterThan, 1)
       expect(ids).to eq([@m2.id])
     end
 
-    it 'less then' do
-      ids = model_ids_for(Conditions::LessThen, 2)
+    it 'less than' do
+      ids = model_ids_for(Conditions::LessThan, 2)
       expect(ids).to eq([@m1.id, @m3.id])
     end
 
@@ -38,13 +38,13 @@ describe 'Scopes' do
       expect(ids).to eq([@m1.id, @m3.id])
     end
 
-    it 'greater then or equal' do
-      ids = model_ids_for(Conditions::LessThenOrEqualTo, 2)
+    it 'greater than or equal' do
+      ids = model_ids_for(Conditions::LessThanOrEqualTo, 2)
       expect(ids).to eq([@m1.id, @m2.id, @m3.id])
     end
 
-    it 'less then or equal' do
-      ids = model_ids_for(Conditions::GreaterThenOrEqualTo, 1)
+    it 'less than or equal' do
+      ids = model_ids_for(Conditions::GreaterThanOrEqualTo, 1)
       expect(ids).to eq([@m1.id, @m2.id, @m3.id])
     end
 

@@ -25,8 +25,8 @@ module Conditions
 
     def condition
       And.new [
-        GreaterThenOrEqualTo.new(@field, from),
-        LessThen.new(@field, to)
+        GreaterThanOrEqualTo.new(@field, from),
+        LessThan.new(@field, to)
       ]
     end
   end

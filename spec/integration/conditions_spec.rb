@@ -32,8 +32,8 @@ describe Conditions do
     expect(TestTask.all.last.kind).to eq('follow up')
   end
 
-  it 'greater_then' do
-    TestTask.trigger on: :after_update, if: {failure_count: {greater_then: 1}} do
+  it 'greater_than' do
+    TestTask.trigger on: :after_update, if: {failure_count: {greater_than: 1}} do
       TestTask.create kind: 'follow up'
     end
 
@@ -48,8 +48,8 @@ describe Conditions do
     expect(TestTask.all.last.kind).to eq('follow up')
   end
 
-  it 'less_then' do
-    TestTask.trigger on: :after_update, if: {failure_count: {less_then: 2}} do
+  it 'less_than' do
+    TestTask.trigger on: :after_update, if: {failure_count: {less_than: 2}} do
       TestTask.create kind: 'follow up'
     end
 
