@@ -55,25 +55,23 @@ describe 'Scopes' do
   end
 
   context 'predicates' do
-    it 'and' do
-      and_condition = Conditions::And.new([])
+    def model_ids_for condition_class, conditions
+      and_condition = condition_class.new([])
       and_condition.conditions = [Conditions::Is.new(:integer_field, 1), Conditions::Is.new(:string_field, 'c')]
 
       table = Arel::Table.new(:parent_models)
       query = table.where(and_condition.scope(table)).project(Arel.sql('id')).to_sql
 
-      ids = ParentModel.connection.execute(query).map { |r| r['id'] }
+      ParentModel.connection.execute(query).map { |r| r['id'] }
+    end
+
+    it 'and' do
+      ids = model_ids_for Conditions::And, [Conditions::Is.new(:integer_field, 1), Conditions::Is.new(:string_field, 'c')]
       expect(ids).to eq([@m3.id])
     end
 
     it 'or' do
-      or_condition = Conditions::Or.new([])
-      or_condition.conditions = [Conditions::Is.new(:integer_field, 1), Conditions::Is.new(:string_field, 'c')]
-
-      table = Arel::Table.new(:parent_models)
-      query = table.where(or_condition.scope(table)).project(Arel.sql('id')).to_sql
-
-      ids = ParentModel.connection.execute(query).map { |r| r['id'] }
+      ids = model_ids_for Conditions::Or, [Conditions::Is.new(:integer_field, 1), Conditions::Is.new(:string_field, 'c')]
       expect(ids).to eq([@m1.id, @m3.id])
     end
   end

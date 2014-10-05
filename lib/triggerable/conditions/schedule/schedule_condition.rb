@@ -1,12 +1,11 @@
 module Conditions
   class ScheduleCondition < FieldCondition
     def initialize field, value
-      if value.is_a?(Hash)
-        condition = value.keys.first
-        value = value.values.first
-      end
-
       super
+      if value.is_a?(Hash)
+        @math_condition = value.keys.first
+        @value = value.values.first
+      end
     end
 
     def true_for? object

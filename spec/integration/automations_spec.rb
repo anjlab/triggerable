@@ -195,8 +195,7 @@ describe 'Automations' do
     expect(TestTask.count).to eq(2)
   end
 
-
-  it 'after greater then 2 hours with 15 minutes interval' do
+  it 'after greater then 2 hours' do
     constantize_time_now Time.utc 2012, 9, 1, 11, 55
 
     TestTask.automation if: {and: [{updated_at: {after: {greater_then: 2.hours}}}, {status: {is: :solved}}, {kind: {is: :service}}]} do
@@ -228,5 +227,127 @@ describe 'Automations' do
     constantize_time_now Time.utc 2012, 9, 1, 14, 25
     Engine.run_automations(15.minutes)
     expect(TestTask.count).to eq(4)
+  end
+
+  it 'after less then 2 hours' do
+    constantize_time_now Time.utc 2012, 9, 1, 11, 55
+
+    TestTask.automation if: {and: [{updated_at: {after: {less_then: 2.hours}}}, {status: {is: :solved}}, {kind: {is: :service}}]} do
+      TestTask.create kind: 'follow up'
+    end
+
+    task = TestTask.create
+    expect(TestTask.count).to eq(1)
+    task.update_attributes status: 'solved', kind: 'service'
+    expect(TestTask.count).to eq(1)
+
+    constantize_time_now Time.utc 2012, 9, 1, 12, 10
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(2)
+
+    constantize_time_now Time.utc 2012, 9, 1, 12, 25
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(3)
+
+    constantize_time_now Time.utc 2012, 9, 1, 13, 55
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(4)
+    expect(TestTask.all.last.kind).to eq('follow up')
+
+    constantize_time_now Time.utc 2012, 9, 1, 14, 10
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(4)
+
+    constantize_time_now Time.utc 2012, 9, 1, 14, 25
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(4)
+  end
+
+  it 'before greater then 2 hours' do
+    constantize_time_now Time.utc 2012, 9, 1, 11, 55
+
+    TestTask.automation if: {and: [{scheduled_at: {before: {greater_then: 2.hours}}}, {status: {is: :solved}}, {kind: {is: :service}}]} do
+      TestTask.create kind: 'follow up'
+    end
+
+    task = TestTask.create scheduled_at: Time.utc(2012, 9, 1, 20, 00)
+    expect(TestTask.count).to eq(1)
+    task.update_attributes status: 'solved', kind: 'service'
+    expect(TestTask.count).to eq(1)
+
+    constantize_time_now Time.utc 2012, 9, 1, 12, 10
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(1)
+
+    constantize_time_now Time.utc 2012, 9, 1, 12, 25
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(1)
+
+    constantize_time_now Time.utc 2012, 9, 1, 17, 55
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(1)
+
+    constantize_time_now Time.utc 2012, 9, 1, 18, 00
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(1)
+
+    constantize_time_now Time.utc 2012, 9, 1, 18, 30
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(2)
+    expect(TestTask.all.last.kind).to eq('follow up')
+
+    constantize_time_now Time.utc 2012, 9, 1, 19, 55
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(3)
+
+    constantize_time_now Time.utc 2012, 9, 1, 20, 00
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(4)
+
+    constantize_time_now Time.utc 2012, 9, 1, 20, 05
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(4)
+
+    constantize_time_now Time.utc 2012, 9, 1, 20, 10
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(4)
+  end
+
+  it 'before less then 2 hours' do
+    constantize_time_now Time.utc 2012, 9, 1, 11, 55
+
+    TestTask.automation if: {and: [{scheduled_at: {before: {less_then: 2.hours}}}, {status: {is: :solved}}, {kind: {is: :service}}]} do
+      TestTask.create kind: 'follow up'
+    end
+
+    task = TestTask.create scheduled_at: Time.utc(2012, 9, 1, 20, 00)
+    expect(TestTask.count).to eq(1)
+    task.update_attributes status: 'solved', kind: 'service'
+    expect(TestTask.count).to eq(1)
+
+    constantize_time_now Time.utc 2012, 9, 1, 12, 10
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(2)
+
+    constantize_time_now Time.utc 2012, 9, 1, 12, 25
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(3)
+
+    constantize_time_now Time.utc 2012, 9, 1, 17, 55
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(4)
+
+    constantize_time_now Time.utc 2012, 9, 1, 18, 00
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(5)
+    expect(TestTask.all.last.kind).to eq('follow up')
+
+    constantize_time_now Time.utc 2012, 9, 1, 18, 30
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(5)
+
+    constantize_time_now Time.utc 2012, 9, 1, 18, 40
+    Engine.run_automations(15.minutes)
+    expect(TestTask.count).to eq(5)
   end
 end
