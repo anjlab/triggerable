@@ -20,7 +20,8 @@ module Triggerable
     end
 
     def run_for! object
-      @block.(object)
+      proc = @block
+      object.instance_eval { instance_exec(&proc) }
     end
   end
 end

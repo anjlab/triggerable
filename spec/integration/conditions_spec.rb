@@ -128,7 +128,9 @@ describe Conditions do
   end
 
   it 'lambda' do
-    TestTask.trigger on: :after_update, if: -> (task) { task.status == 'solved' && task.kind == 'service' } do
+    TestTask.trigger on: :after_update, if: -> {
+      status == 'solved' && kind == 'service'
+    } do
       TestTask.create kind: 'follow up'
     end
 

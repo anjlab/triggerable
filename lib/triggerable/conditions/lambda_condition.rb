@@ -5,7 +5,8 @@ module Conditions
     end
 
     def true_for? object
-      @block.(object)
+      proc = @block
+      object.instance_eval { instance_exec(&proc) }
     end
   end
 end

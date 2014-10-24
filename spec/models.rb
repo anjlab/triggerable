@@ -4,6 +4,14 @@ class TestTask < ActiveRecord::Base
   def solved?
     status == 'solved'
   end
+
+  def true_method
+    true
+  end
+
+  def false_method
+    false
+  end
 end
 
 class ParentModel < ActiveRecord::Base

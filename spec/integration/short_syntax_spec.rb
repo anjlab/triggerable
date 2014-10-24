@@ -51,4 +51,42 @@ describe 'Short syntax' do
     expect(TestTask.count).to eq(2)
     expect(TestTask.all.last.kind).to eq('follow up')
   end
+
+  it 'method predicate call' do
+    TestTask.trigger on: :after_update, if: { and: [:solved?, :true_method] } do
+      TestTask.create kind: 'follow up'
+    end
+
+    task = TestTask.create
+    expect(TestTask.count).to eq(1)
+
+    task.update_attributes status: 'solved'
+    expect(TestTask.count).to eq(2)
+    expect(TestTask.all.last.kind).to eq('follow up')
+  end
+
+  it 'method predicate call 2' do
+    TestTask.trigger on: :after_update, if: { or: [:solved?, :true_method] } do
+      TestTask.create kind: 'follow up'
+    end
+
+    task = TestTask.create
+    expect(TestTask.count).to eq(1)
+
+    task.update_attributes status: 'not_solved'
+    expect(TestTask.count).to eq(2)
+    expect(TestTask.all.last.kind).to eq('follow up')
+  end
+
+  it 'passes context to action' do
+    TestTask.trigger on: :before_update, if: :solved? do
+      self.status = 'confirmed'
+    end
+
+    task = TestTask.create
+    expect(TestTask.count).to eq(1)
+
+    task.update_attributes status: 'solved'
+    expect(task.status).to eq('confirmed')
+  end
 end

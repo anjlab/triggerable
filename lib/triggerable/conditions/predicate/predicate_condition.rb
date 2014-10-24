@@ -38,7 +38,9 @@ module Conditions
     end
 
     def true_conditions object
-      @conditions.select {|c| c.true_for?(object) }
+      @conditions.select do |c|
+        c.is_a?(Symbol) ? object.send(c) : c.true_for?(object)
+      end
     end
   end
 end
