@@ -12,8 +12,8 @@ class Engine
     self.automations << Rules::Automation.new(model, options, block)
   end
 
-  def self.triggers_for model, callback
-    triggers.select{|t| t.model == model && t.callback == callback }
+  def self.triggers_for obj, callback
+    triggers.select{|t| obj.is_a?(t.model) && t.callback == callback }
   end
 
   def self.run_automations interval
