@@ -11,7 +11,7 @@ module Triggerable
       end
     end
 
-    def run_for!(object); end
+    def run_for!(trigger_name, object); end
   end
 
   class LambdaAction < Action
@@ -19,9 +19,9 @@ module Triggerable
       @block = block
     end
 
-    def run_for! object
+    def run_for! object, trigger_name
       proc = @block
-      object.instance_eval { instance_exec(&proc) }
+      object.instance_eval { instance_exec(trigger_name, &proc) }
     end
   end
 end

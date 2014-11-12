@@ -8,7 +8,7 @@ module Rules
     end
 
     def execute! object
-      actions.each {|a| a.run_for!(object)} if condition.true_for?(object)
+      actions.each {|a| a.run_for!(object, name)} if condition.true_for?(object)
     end
   end
 end

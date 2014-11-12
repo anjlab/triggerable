@@ -7,7 +7,7 @@ module Rules
       ids = ParentModel.connection.execute(query).map { |r| r['id'] }
       models = model.where(id: ids)
 
-      models.each {|o| actions.each {|a| a.run_for!(o)} }
+      models.each {|object| actions.each {|a| a.run_for!(object, name)} }
     end
   end
 end
