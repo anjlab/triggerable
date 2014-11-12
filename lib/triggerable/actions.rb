@@ -21,7 +21,11 @@ module Triggerable
 
     def run_for! object, trigger_name
       proc = @block
-      object.instance_eval { instance_exec(trigger_name, &proc) }
+      object.instance_eval do
+        PaperTrail.whodunnit = trigger_name if defined?(PaperTrail)
+        instance_exec(&proc)
+        PaperTrail.whodunnit = nil if defined?(PaperTrail)
+      end
     end
   end
 end
