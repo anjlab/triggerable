@@ -4,7 +4,7 @@ module Rules
       table = Arel::Table.new(model.table_name)
       scope = @condition.scope(table)
       query = table.where(scope).project(Arel.sql('id')).to_sql
-      ids = ParentModel.connection.execute(query).map { |r| r['id'] }
+      ids = ActiveRecord::Base.connection.execute(query).map { |r| r['id'] }
       models = model.where(id: ids)
 
       models.each {|object| actions.each {|a| a.run_for!(object, name)} }

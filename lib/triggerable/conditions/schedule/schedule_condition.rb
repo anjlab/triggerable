@@ -22,12 +22,5 @@ module Conditions
       i = Engine.interval
       Time.at((Time.now.to_i / i) * i).utc
     end
-
-    def condition
-      And.new [
-        GreaterThanOrEqualTo.new(@field, from),
-        LessThan.new(@field, to)
-      ]
-    end
   end
 end

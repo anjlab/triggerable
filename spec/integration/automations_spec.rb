@@ -22,7 +22,7 @@ describe 'Automations' do
     Engine.run_automations(1.hour)
     expect(TestTask.count).to eq(1)
 
-    constantize_time_now Time.utc 2012, 9, 2, 13, 00
+    constantize_time_now Time.utc 2012, 9, 2, 12, 00
     Engine.run_automations(1.hour)
 
     expect(TestTask.count).to eq(2)
@@ -52,7 +52,7 @@ describe 'Automations' do
   end
 
   it 'after 30 mins with 30 mins interval' do
-    constantize_time_now Time.utc 2012, 9, 1, 11, 55
+    constantize_time_now Time.utc 2012, 9, 1, 12, 00
 
     TestTask.automation if: {and: [{updated_at: {after: 30.minutes}}, {status: {is: :solved}}, {kind: {is: :service}}]} do
       TestTask.create kind: 'follow up'
@@ -63,11 +63,11 @@ describe 'Automations' do
     task.update_attributes status: 'solved', kind: 'service'
     expect(TestTask.count).to eq(1)
 
-    constantize_time_now Time.utc 2012, 9, 1, 12, 12
+    constantize_time_now Time.utc 2012, 9, 1, 12, 29
     Engine.run_automations(30.minutes)
     expect(TestTask.count).to eq(1)
 
-    constantize_time_now Time.utc 2012, 9, 1, 12, 50
+    constantize_time_now Time.utc 2012, 9, 1, 12, 30
     Engine.run_automations(30.minutes)
 
     expect(TestTask.count).to eq(2)

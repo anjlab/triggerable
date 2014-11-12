@@ -14,14 +14,20 @@ module Conditions
     end
 
     private
-    def condition
-      return super if @math_condition.blank?
 
-      case @math_condition
-      when :greater_than
-        LessThanOrEqualTo.new(@field, from)
-      when :less_than
-        GreaterThanOrEqualTo.new(@field, from)
+    def condition
+      if @math_condition.blank?
+        And.new [
+          GreaterThan.new(@field, from),
+          LessThanOrEqualTo.new(@field, to)
+        ]
+      else
+        case @math_condition
+        when :greater_than
+          LessThanOrEqualTo.new(@field, from)
+        when :less_than
+          GreaterThanOrEqualTo.new(@field, from)
+        end
       end
     end
   end
