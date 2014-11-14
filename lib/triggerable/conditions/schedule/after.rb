@@ -1,12 +1,7 @@
 module Conditions
   class After < ScheduleCondition
     def from
-      case @math_condition
-      when :greater_than, :less_than
-        Time.now - @value
-      when nil
-        automation_time - @value - Engine.interval
-      end
+      automation_time - @value - Engine.interval
     end
 
     def to
@@ -16,19 +11,10 @@ module Conditions
     private
 
     def condition
-      if @math_condition.blank?
-        And.new [
-          GreaterThan.new(@field, from),
-          LessThanOrEqualTo.new(@field, to)
-        ]
-      else
-        case @math_condition
-        when :greater_than
-          LessThanOrEqualTo.new(@field, from)
-        when :less_than
-          GreaterThanOrEqualTo.new(@field, from)
-        end
-      end
+      And.new [
+        GreaterThan.new(@field, from),
+        LessThanOrEqualTo.new(@field, to)
+      ]
     end
   end
 end

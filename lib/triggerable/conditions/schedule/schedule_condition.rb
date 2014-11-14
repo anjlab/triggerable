@@ -1,11 +1,8 @@
 module Conditions
   class ScheduleCondition < FieldCondition
     def initialize field, value
+      @value = value.values.first if value.is_a?(Hash)
       super
-      if value.is_a?(Hash)
-        @math_condition = value.keys.first
-        @value = value.values.first
-      end
     end
 
     def true_for? object
@@ -17,6 +14,7 @@ module Conditions
     end
 
     protected
+
     # automation_time is Time.now rounded by Engine.interval
     def automation_time
       i = Engine.interval
