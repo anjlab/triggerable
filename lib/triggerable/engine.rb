@@ -1,7 +1,7 @@
 class Engine
   cattr_accessor :triggers, :automations, :interval
 
-  self.triggers = []
+  self.triggers    = []
   self.automations = []
 
   def self.trigger model, options, block
@@ -13,7 +13,7 @@ class Engine
   end
 
   def self.triggers_for obj, callback
-    triggers.select{|t| obj.is_a?(t.model) && t.callback == callback }
+    triggers.select { |t| obj.class.name == t.model.name && t.callback == callback }
   end
 
   def self.run_automations interval
@@ -22,7 +22,7 @@ class Engine
   end
 
   def self.clear
-    self.triggers = []
+    self.triggers    = []
     self.automations = []
   end
 end
