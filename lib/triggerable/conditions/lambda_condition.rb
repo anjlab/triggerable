@@ -8,5 +8,9 @@ module Conditions
       proc = @block
       object.instance_eval { instance_exec(&proc) }
     end
+
+    def desc
+      'lambda'
+    end
   end
 end

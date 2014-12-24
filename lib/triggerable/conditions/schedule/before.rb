@@ -5,7 +5,7 @@ module Conditions
     end
 
     def to
-      automation_time + @value + Engine.interval
+      automation_time + @value + Triggerable::Engine.interval
     end
 
     private

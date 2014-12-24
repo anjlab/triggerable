@@ -1,7 +1,7 @@
 module Conditions
   class After < ScheduleCondition
     def from
-      automation_time - @value - Engine.interval
+      automation_time - @value - Triggerable::Engine.interval
     end
 
     def to

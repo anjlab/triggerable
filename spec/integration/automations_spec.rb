@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'Automations' do
   before(:each) do
-    Engine.clear
+    Triggerable::Engine.clear
     TestTask.destroy_all
   end
 
@@ -19,11 +19,11 @@ describe 'Automations' do
     expect(TestTask.count).to eq(1)
 
     constantize_time_now Time.utc 2012, 9, 1, 20, 00
-    Engine.run_automations(1.hour)
+    Triggerable::Engine.run_automations(1.hour)
     expect(TestTask.count).to eq(1)
 
     constantize_time_now Time.utc 2012, 9, 2, 12, 00
-    Engine.run_automations(1.hour)
+    Triggerable::Engine.run_automations(1.hour)
 
     expect(TestTask.count).to eq(2)
     expect(TestTask.all.last.kind).to eq('follow up')
@@ -42,11 +42,11 @@ describe 'Automations' do
     expect(TestTask.count).to eq(1)
 
     constantize_time_now Time.utc 2012, 9, 1, 15, 00
-    Engine.run_automations(1.hour)
+    Triggerable::Engine.run_automations(1.hour)
     expect(TestTask.count).to eq(1)
 
     constantize_time_now Time.utc 2012, 9, 1, 18, 00
-    Engine.run_automations(1.hour)
+    Triggerable::Engine.run_automations(1.hour)
     expect(TestTask.count).to eq(2)
     expect(TestTask.all.last.kind).to eq('follow up')
   end
@@ -64,11 +64,11 @@ describe 'Automations' do
     expect(TestTask.count).to eq(1)
 
     constantize_time_now Time.utc 2012, 9, 1, 12, 29
-    Engine.run_automations(30.minutes)
+    Triggerable::Engine.run_automations(30.minutes)
     expect(TestTask.count).to eq(1)
 
     constantize_time_now Time.utc 2012, 9, 1, 12, 30
-    Engine.run_automations(30.minutes)
+    Triggerable::Engine.run_automations(30.minutes)
 
     expect(TestTask.count).to eq(2)
     expect(TestTask.all.last.kind).to eq('follow up')
@@ -86,11 +86,11 @@ describe 'Automations' do
     expect(TestTask.count).to eq(1)
 
     constantize_time_now Time.utc 2012, 9, 1, 14, 31
-    Engine.run_automations(30.minutes)
+    Triggerable::Engine.run_automations(30.minutes)
     expect(TestTask.count).to eq(1)
 
     constantize_time_now Time.utc 2012, 9, 1, 15, 03
-    Engine.run_automations(30.minutes)
+    Triggerable::Engine.run_automations(30.minutes)
     expect(TestTask.count).to eq(2)
     expect(TestTask.all.last.kind).to eq('follow up')
   end
@@ -108,11 +108,11 @@ describe 'Automations' do
     expect(TestTask.count).to eq(1)
 
     constantize_time_now Time.utc 2012, 9, 1, 12, 00
-    Engine.run_automations(4.hours)
+    Triggerable::Engine.run_automations(4.hours)
     expect(TestTask.count).to eq(1)
 
     constantize_time_now Time.utc 2012, 9, 1, 16, 00
-    Engine.run_automations(4.hours)
+    Triggerable::Engine.run_automations(4.hours)
 
     expect(TestTask.count).to eq(2)
     expect(TestTask.all.last.kind).to eq('follow up')
@@ -130,11 +130,11 @@ describe 'Automations' do
     expect(TestTask.count).to eq(1)
 
     constantize_time_now Time.utc 2012, 9, 1, 04, 05
-    Engine.run_automations(2.hour)
+    Triggerable::Engine.run_automations(2.hour)
     expect(TestTask.count).to eq(1)
 
     constantize_time_now Time.utc 2012, 9, 1, 10, 01
-    Engine.run_automations(2.hour)
+    Triggerable::Engine.run_automations(2.hour)
     expect(TestTask.count).to eq(2)
     expect(TestTask.all.last.kind).to eq('follow up')
   end
@@ -152,21 +152,21 @@ describe 'Automations' do
     expect(TestTask.count).to eq(1)
 
     constantize_time_now Time.utc 2012, 9, 1, 11, 46
-    Engine.run_automations(15.minutes)
+    Triggerable::Engine.run_automations(15.minutes)
     expect(TestTask.count).to eq(1)
 
     constantize_time_now Time.utc 2012, 9, 1, 13, 46
-    Engine.run_automations(15.minutes)
+    Triggerable::Engine.run_automations(15.minutes)
     expect(TestTask.count).to eq(1)
 
     constantize_time_now Time.utc 2012, 9, 1, 14, 02
-    Engine.run_automations(15.minutes)
+    Triggerable::Engine.run_automations(15.minutes)
 
     expect(TestTask.count).to eq(2)
     expect(TestTask.all.last.kind).to eq('follow up')
 
     constantize_time_now Time.utc 2012, 9, 1, 14, 17
-    Engine.run_automations(15.minutes)
+    Triggerable::Engine.run_automations(15.minutes)
     expect(TestTask.count).to eq(2)
   end
 
@@ -182,16 +182,16 @@ describe 'Automations' do
     expect(TestTask.count).to eq(1)
 
     constantize_time_now Time.utc 2012, 9, 1, 10, 05
-    Engine.run_automations(15.minutes)
+    Triggerable::Engine.run_automations(15.minutes)
     expect(TestTask.count).to eq(1)
 
     constantize_time_now Time.utc 2012, 9, 1, 13, 30
-    Engine.run_automations(15.minutes)
+    Triggerable::Engine.run_automations(15.minutes)
     expect(TestTask.count).to eq(2)
     expect(TestTask.all.last.kind).to eq('follow up')
 
     constantize_time_now Time.utc 2012, 9, 1, 15, 32
-    Engine.run_automations(15.minutes)
+    Triggerable::Engine.run_automations(15.minutes)
     expect(TestTask.count).to eq(2)
   end
 end

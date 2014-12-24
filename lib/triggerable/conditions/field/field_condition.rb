@@ -13,6 +13,10 @@ module Conditions
       table[@field].send(@db_comparator, @value)
     end
 
+    def desc
+      "#{@field} #{@ruby_comparator} #{@value}"
+    end
+
     private
     def field_value object
       object.send(@field)

@@ -8,5 +8,9 @@ module Conditions
     def scope
       "#{@field} IS #{'NOT ' if @value}NULL"
     end
+
+    def desc
+      "#{@field} exists"
+    end
   end
 end

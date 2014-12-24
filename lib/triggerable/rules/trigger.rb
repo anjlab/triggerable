@@ -8,7 +8,17 @@ module Rules
     end
 
     def execute! object
-      actions.each {|a| a.run_for!(object, name)} if condition.true_for?(object)
+      puts "#{desc}: #{condition.desc}" if debug?
+
+      if condition.true_for?(object)
+        actions.each do |a|
+          begin
+            a.run_for!(object, name)
+          rescue Exception => ex
+            "#{desc} failed with exception #{ex}"
+          end
+        end
+      end
     end
   end
 end

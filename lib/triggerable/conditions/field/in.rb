@@ -9,6 +9,10 @@ module Conditions
       @value.include?(field_value(object))
     end
 
+    def desc
+      "#{@field} #{@db_comparator} #{@value}"
+    end
+
     private
     def sanitized_value
       "(#{super.join(',')})"

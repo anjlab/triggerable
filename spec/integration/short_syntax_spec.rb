@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'Short syntax' do
   before(:each) do
-    Engine.clear
+    Triggerable::Engine.clear
     TestTask.destroy_all
   end
 

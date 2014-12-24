@@ -8,5 +8,15 @@ module Rules
       @name      = options[:name]
       @actions   = Triggerable::Action.build(block || options[:do])
     end
+
+    protected
+
+    def desc
+      "#{self.class.name} #{name || self}(#{model})"
+    end
+
+    def debug?
+      Triggerable::Engine.debug
+    end
   end
 end

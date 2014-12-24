@@ -7,5 +7,9 @@ module Conditions
     def true_for? object
       object.send(@method_name)
     end
+
+    def desc
+      @method_name
+    end
   end
 end
