@@ -1,20 +1,22 @@
-module Conditions
-  class After < ScheduleCondition
-    def from
-      automation_time - @value - Triggerable::Engine.interval
-    end
+module Triggerable
+  module Conditions
+    class After < ScheduleCondition
+      def from
+        automation_time - @value - Triggerable::Engine.interval
+      end
 
-    def to
-      automation_time - @value
-    end
+      def to
+        automation_time - @value
+      end
 
-    private
+      private
 
-    def condition
-      And.new [
-        GreaterThan.new(@field, from),
-        LessThanOrEqualTo.new(@field, to)
-      ]
+      def condition
+        And.new [
+          GreaterThan.new(@field, from),
+          LessThanOrEqualTo.new(@field, to)
+        ]
+      end
     end
   end
 end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Conditions do
+describe Triggerable::Conditions do
   before(:each) do
     class Sample; attr_accessor(:field); end
     @obj = Sample.new
@@ -9,11 +9,11 @@ describe Conditions do
   context 'is' do
 
     def check_value value
-      Conditions::Is.new(:field, value).true_for?(@obj)
+      Triggerable::Conditions::Is.new(:field, value).true_for?(@obj)
     end
 
     def scope value
-      Conditions::Is.new(:field, value).scope
+      Triggerable::Conditions::Is.new(:field, value).scope
     end
 
     it 'integer' do
@@ -36,11 +36,11 @@ describe Conditions do
   context 'is_not' do
 
     def check_value value
-      Conditions::IsNot.new(:field, value).true_for?(@obj)
+      Triggerable::Conditions::IsNot.new(:field, value).true_for?(@obj)
     end
 
     def scope value
-      Conditions::IsNot.new(:field, value).scope
+      Triggerable::Conditions::IsNot.new(:field, value).scope
     end
 
     it 'integer' do
@@ -62,11 +62,11 @@ describe Conditions do
 
   context 'greater_than' do
     def check_value value
-      Conditions::GreaterThan.new(:field, value).true_for?(@obj)
+      Triggerable::Conditions::GreaterThan.new(:field, value).true_for?(@obj)
     end
 
     def scope value
-      Conditions::GreaterThan.new(:field, value).scope
+      Triggerable::Conditions::GreaterThan.new(:field, value).scope
     end
 
     it 'integer' do
@@ -90,11 +90,11 @@ describe Conditions do
 
   context 'less_than' do
     def check_value value
-      Conditions::LessThan.new(:field, value).true_for?(@obj)
+      Triggerable::Conditions::LessThan.new(:field, value).true_for?(@obj)
     end
 
     def scope value
-      Conditions::LessThan.new(:field, value).scope
+      Triggerable::Conditions::LessThan.new(:field, value).scope
     end
 
     it 'integer' do
@@ -118,11 +118,11 @@ describe Conditions do
 
   context 'in' do
     def check_value value
-      Conditions::In.new(:field, value).true_for?(@obj)
+      Triggerable::Conditions::In.new(:field, value).true_for?(@obj)
     end
 
     def scope value
-      Conditions::In.new(:field, value).scope
+      Triggerable::Conditions::In.new(:field, value).scope
     end
 
     it 'integer' do
@@ -160,7 +160,7 @@ describe Conditions do
     end
 
     context 'and' do
-      before(:each) { @and_condition = Conditions::And.new([]) }
+      before(:each) { @and_condition = Triggerable::Conditions::And.new([]) }
 
       it ('true + true') do
         @and_condition.conditions = [TrueCondition.new, TrueCondition.new]
@@ -179,7 +179,7 @@ describe Conditions do
     end
 
     context 'or' do
-      before(:each) { @or_condition = Conditions::Or.new([]) }
+      before(:each) { @or_condition = Triggerable::Conditions::Or.new([]) }
 
       it ('true + true') do
         @or_condition.conditions = [TrueCondition.new, TrueCondition.new]

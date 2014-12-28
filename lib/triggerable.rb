@@ -23,7 +23,8 @@ require "triggerable/conditions/schedule/schedule_condition"
 require "triggerable/conditions/schedule/before"
 require "triggerable/conditions/schedule/after"
 
-require "triggerable/actions"
+require "triggerable/actions/action"
+require "triggerable/actions/lambda_action"
 
 module Triggerable
   extend ActiveSupport::Concern
@@ -55,13 +56,13 @@ module Triggerable
 end
 
 COMPARSIONS = [
-  { name: 'Is',          ancestor: Conditions::FieldCondition, args: { ruby_comparator: '==', db_comparator: 'eq' }  },
-  { name: 'GreaterThan', ancestor: Conditions::FieldCondition, args: { ruby_comparator: '>',  db_comparator: 'gt' }  },
-  { name: 'LessThan',    ancestor: Conditions::FieldCondition, args: { ruby_comparator: '<',  db_comparator: 'lt' }  },
-  { name: 'IsNot',       ancestor: Conditions::FieldCondition, args: { ruby_comparator: '!=', db_comparator: 'not_eq'}  },
+  { name: 'Is',          ancestor: Triggerable::Conditions::FieldCondition, args: { ruby_comparator: '==', db_comparator: 'eq' }  },
+  { name: 'GreaterThan', ancestor: Triggerable::Conditions::FieldCondition, args: { ruby_comparator: '>',  db_comparator: 'gt' }  },
+  { name: 'LessThan',    ancestor: Triggerable::Conditions::FieldCondition, args: { ruby_comparator: '<',  db_comparator: 'lt' }  },
+  { name: 'IsNot',       ancestor: Triggerable::Conditions::FieldCondition, args: { ruby_comparator: '!=', db_comparator: 'not_eq'}  },
 
-  { name: 'GreaterThanOrEqualTo', ancestor: Conditions::OrEqualTo, args: { db_comparator: 'gteq', additional_condition: 'Conditions::GreaterThan' } },
-  { name: 'LessThanOrEqualTo',    ancestor: Conditions::OrEqualTo, args: { db_comparator: 'lteq', additional_condition: 'Conditions::LessThan'    } }
+  { name: 'GreaterThanOrEqualTo', ancestor: Triggerable::Conditions::OrEqualTo, args: { db_comparator: 'gteq', additional_condition: 'Triggerable::Conditions::GreaterThan' } },
+  { name: 'LessThanOrEqualTo',    ancestor: Triggerable::Conditions::OrEqualTo, args: { db_comparator: 'lteq', additional_condition: 'Triggerable::Conditions::LessThan'    } }
 ]
 
 COMPARSIONS.each do |desc|
@@ -72,7 +73,7 @@ COMPARSIONS.each do |desc|
     end
   end
 
-  Conditions.const_set(desc[:name], klass)
+  Triggerable::Conditions.const_set(desc[:name], klass)
 end
 
 ActiveSupport.on_load(:active_record) { include Triggerable }

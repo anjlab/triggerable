@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Conditions do
+describe Triggerable::Conditions do
   before(:each) do
     Triggerable::Engine.clear
     TestTask.destroy_all

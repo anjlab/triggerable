@@ -6,14 +6,16 @@ describe 'Actions' do
     TestTask.destroy_all
   end
 
-  class CreateFollowUp < Triggerable::Action
+  class CreateFollowUp < Triggerable::Actions::Action
     def run_for! trigger_name, task
       TestTask.create kind: 'follow up'
     end
   end
 
   it 'custom action' do
-    TestTask.trigger on: :after_update, if: {status: 'solved'}, do: :create_follow_up
+    TestTask.trigger on: :after_update,
+                     if: { status: 'solved' },
+                     do: :create_follow_up
 
     task = TestTask.create
     expect(TestTask.count).to eq(1)
@@ -24,7 +26,9 @@ describe 'Actions' do
   end
 
   it 'custom action chain' do
-    TestTask.trigger on: :after_update, if: {status: 'solved'}, do: [:create_follow_up, :create_follow_up]
+    TestTask.trigger on: :after_update,
+                     if: { status: 'solved' },
+                     do: [:create_follow_up, :create_follow_up]
 
     task = TestTask.create
     expect(TestTask.count).to eq(1)

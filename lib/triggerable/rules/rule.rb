@@ -1,22 +1,24 @@
-module Rules
-  class Rule
-    attr_accessor :name, :model, :condition, :actions
+module Triggerable
+  module Rules
+    class Rule
+      attr_accessor :name, :model, :condition, :actions
 
-    def initialize model, options, block
-      @model     = model
-      @condition = Conditions::Condition.build(options[:if])
-      @name      = options[:name]
-      @actions   = Triggerable::Action.build(block || options[:do])
-    end
+      def initialize model, options, block
+        @model     = model
+        @condition = Conditions::Condition.build(options[:if])
+        @name      = options[:name]
+        @actions   = Triggerable::Actions::Action.build(block || options[:do])
+      end
 
-    protected
+      protected
 
-    def desc
-      "#{self.class.name} #{name || self}(#{model})"
-    end
+      def desc
+        "#{self.class.name} #{name || self}(#{model})"
+      end
 
-    def debug?
-      Triggerable::Engine.debug
+      def debug?
+        Triggerable::Engine.debug
+      end
     end
   end
 end
