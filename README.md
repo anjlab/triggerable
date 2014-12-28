@@ -56,7 +56,7 @@ trigger on: :after_create, if: { and: [{ field1: '1' }, { field2: 1 }] }, ...
 trigger on: :after_create, if: { or: [{ field1: '1' }, { field2: 1 }] }, ...
 ```
 
-Triggerable does not run automations by itself, you should call `Engine.run_automations(interval)` using any scheduling script. Interval is a time difference between calling the method (e.g. `1.hour`). *You should avoid situations when your interval is less then the time your automations need to complete!*
+Triggerable does not run automations by itself, you should call `Triggerable::Engine.run_automations(interval)` using any scheduling script. Interval is a time difference between calling the method (e.g. `1.hour`). *You should avoid situations when your interval is less then the time your automations need to complete!*
 
 If you have more complex condition or need to check associations (not supported in DSL now), you should use a lambda condition form:
 
@@ -79,6 +79,16 @@ class User
   trigger on: :after_create, if: { receives_sms: true }, do: :send_welcome_sms
 end
 ```
+
+## Logging and debugging
+
+You can easily turn on logging and debugging (using `puts`):
+
+```ruby
+Triggerable::Engine.logger = Logger.new(File.join(Rails.root, 'log', 'triggers.log'))
+Triggerable::Engine.debug = true
+```
+
 
 ## Contributing
 

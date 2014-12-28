@@ -1,6 +1,12 @@
+require 'logger'
+
 module Triggerable
   class Engine
-    cattr_accessor :triggers, :automations, :interval, :debug
+    cattr_accessor :triggers,
+                   :automations,
+                   :interval,
+                   :logger,
+                   :debug
 
     self.triggers    = []
     self.automations = []
@@ -25,6 +31,11 @@ module Triggerable
     def self.clear
       self.triggers    = []
       self.automations = []
+    end
+
+    def self.log level, message
+      puts message if debug
+      logger.send(level, "#{Time.now.strftime('%FT%T%z')}: #{message}") if logger.present?
     end
   end
 end

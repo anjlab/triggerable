@@ -8,15 +8,13 @@ module Rules
     end
 
     def execute! object
-      puts "#{desc}: #{condition.desc}" if debug?
+      return unless condition.true_for?(object)
 
-      if condition.true_for?(object)
-        actions.each do |a|
-          begin
-            a.run_for!(object, name)
-          rescue Exception => ex
-            "#{desc} failed with exception #{ex}"
-          end
+      actions.each do |action|
+        begin
+          action.run_for!(object, name)
+        rescue Exception => ex
+          Triggerable::Engine.log(:error, "#{desc} failed with exception #{ex}")
         end
       end
     end
