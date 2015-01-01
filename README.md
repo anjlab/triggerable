@@ -66,10 +66,10 @@ trigger on: :after_update, if: -> { orders.any? } do
 end
 ```
 
-If you need to share logic between triggers/automations bodies you can move it into separate class. It should be inherited from `Triggerable::Action` and implement a single method `run_for!(obj, trigger_name)` where trigger_name is a string passed to rule in :name option and obj is a triggered object. Then you can pass a name of your action class instead of do block.
+If you need to share logic between triggers/automations bodies you can move it into separate class. It should be inherited from `Triggerable::Actions::Action` and implement a single method `run_for!(object, rule_name)` where trigger_name is a string passed to rule in :name option and obj is a triggered object. Then you can pass a name of your action class instead of do block.
 
 ```ruby
-class SendWelcomeSms < Triggerable::Action
+class SendWelcomeSms < Triggerable::Actions::Action
   def run_for! object, trigger_name
     SmsGateway.send_to object.phone, welcome_text
   end

@@ -7,7 +7,7 @@ describe 'Actions' do
   end
 
   class CreateFollowUp < Triggerable::Actions::Action
-    def run_for! trigger_name, task
+    def run_for! task, rule_name
       TestTask.create kind: 'follow up'
     end
   end

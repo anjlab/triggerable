@@ -12,7 +12,7 @@ module Triggerable
         end
       end
 
-      def run_for!(trigger_name, object); end
+      def run_for!(object, rule_name); end
     end
   end
 end
