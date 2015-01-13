@@ -194,4 +194,33 @@ describe 'Automations' do
     Triggerable::Engine.run_automations(15.minutes)
     expect(TestTask.count).to eq(2)
   end
+
+  it 'can pass relation to action block' do
+    constantize_time_now Time.utc 2012, 9, 1, 12, 00
+
+    TestTask.automation if: {
+      and: [
+        { updated_at: { after: 24.hours } },
+        { status: { is: :solved } },
+        { kind: { is: :service } }
+      ]
+    }, pass_relation: true do
+      raise 'error' if count < 2
+      update_all(kind: 'other')
+    end
+
+    task1 = TestTask.create
+    task2 = TestTask.create
+    task1.update_attributes status: 'solved', kind: 'service'
+    task2.update_attributes status: 'solved', kind: 'service'
+    expect(TestTask.count).to eq(2)
+
+    constantize_time_now Time.utc 2012, 9, 2, 12, 00
+    Triggerable::Engine.run_automations(1.hour)
+
+    task1.reload
+    expect(task1.kind).to eq('other')
+    task2.reload
+    expect(task2.kind).to eq('other')
+  end
 end

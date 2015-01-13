@@ -58,6 +58,18 @@ trigger on: :after_create, if: { or: [{ field1: '1' }, { field2: 1 }] }, ...
 
 Triggerable does not run automations by itself, you should call `Triggerable::Engine.run_automations(interval)` using any scheduling script. Interval is a time difference between calling the method (e.g. `1.hour`). *You should avoid situations when your interval is less then the time your automations need to complete!*
 
+Automation calls action block for each found object, but it's possible to pass a relation to action block using `pass_relation` option: 
+
+```ruby
+class User < ActiveRecord::Base
+  automation if: {
+    created_at: { after: 24.hours }, confirmed: false
+  }, pass_relation: true do
+    each(&:send_confirmation_email)
+  end
+end
+```
+
 If you have more complex condition or need to check associations (not supported in DSL now), you should use a lambda condition form:
 
 ```ruby

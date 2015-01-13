@@ -1,18 +1,23 @@
 module Triggerable
   module Rules
     class Automation < Rule
+      attr_accessor :pass_relation
+
+      def initialize model, options, block
+        super(model, options, block)
+        @pass_relation = options[:pass_relation]
+      end
+
       def execute!
         ids = ActiveRecord::Base.connection.execute(build_query).map { |r| r['id'] }
         models = model.where(id: ids)
 
         Triggerable::Engine.log(:debug, "#{desc}: processing #{models.count} object(s)")
 
-        models.each do |object|
-          begin
-            actions.each {|a| a.run_for!(object, name)}
-          rescue Exception => ex
-            Triggerable::Engine.log(:error, "#{desc} failed with exception #{ex}")
-          end
+        if @pass_relation
+          execute_on!(models)
+        else
+          models.each { |object| execute_on!(object) }
         end
       end
 
@@ -27,6 +32,14 @@ module Triggerable
         Triggerable::Engine.log(:debug, "#{desc}: #{query}")
 
         query
+      end
+
+      def execute_on!(target)
+        begin
+          actions.each {|a| a.run_for!(target, name)}
+        rescue Exception => ex
+          Triggerable::Engine.log(:error, "#{desc} failed with exception #{ex}")
+        end
       end
     end
   end
