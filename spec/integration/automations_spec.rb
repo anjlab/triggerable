@@ -29,6 +29,28 @@ describe 'Automations' do
     expect(TestTask.all.last.kind).to eq('follow up')
   end
 
+  it 'before+not_in' do
+    constantize_time_now Time.utc 2012, 9, 1, 12, 00
+
+    TestTask.automation if: {and: [{scheduled_at: {before: 2.hours}}, {status: {not_in: [:solved, :completed]}}]} do
+      TestTask.create kind: 'follow up'
+    end
+
+    task = TestTask.create scheduled_at: Time.utc(2012, 9, 1, 20, 00)
+    expect(TestTask.count).to eq(1)
+    task.update_attributes status: 'open', kind: 'service'
+    expect(TestTask.count).to eq(1)
+
+    constantize_time_now Time.utc 2012, 9, 1, 15, 00
+    Triggerable::Engine.run_automations(1.hour)
+    expect(TestTask.count).to eq(1)
+
+    constantize_time_now Time.utc 2012, 9, 1, 18, 00
+    Triggerable::Engine.run_automations(1.hour)
+    expect(TestTask.count).to eq(2)
+    expect(TestTask.all.last.kind).to eq('follow up')
+  end
+
   it 'before' do
     constantize_time_now Time.utc 2012, 9, 1, 12, 00
 

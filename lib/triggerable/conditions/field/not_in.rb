@@ -14,6 +14,10 @@ module Triggerable
         "#{@field} #{@db_comparator} #{@value}"
       end
 
+      def scope table
+        Arel::Nodes::SqlLiteral.new("#{@field} #{@db_comparator} #{sanitized_value}")
+      end
+
       private
       def sanitized_value
         "(#{super.join(',')})"
