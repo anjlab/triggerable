@@ -50,7 +50,8 @@ module Triggerable
     private
 
     def run_triggers callback
-      Engine.triggers_for(self, callback).each{|t| t.execute!(self)}
+      Engine.triggers_for(self, callback).each { |t| t.execute!(self) }
+      true
     end
   end
 
