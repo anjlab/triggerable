@@ -127,6 +127,22 @@ describe Triggerable::Conditions do
     expect(TestTask.all.last.kind).to eq('follow up')
   end
 
+  it 'not in' do
+    TestTask.trigger on: :after_update, if: { status: { not_in: ['solved', 'confirmed'] } } do
+      TestTask.create kind: 'follow up'
+    end
+
+    task = TestTask.create
+    expect(TestTask.count).to eq(1)
+
+    task.update_attributes status: 'solved'
+    expect(TestTask.count).to eq(1)
+
+    task.update_attributes status: 'open'
+    expect(TestTask.count).to eq(2)
+    expect(TestTask.all.last.kind).to eq('follow up')
+  end
+
   it 'lambda' do
     TestTask.trigger on: :after_update, if: -> {
       status == 'solved' && kind == 'service'

@@ -13,6 +13,7 @@ require "triggerable/conditions/method_condition"
 require "triggerable/conditions/field/field_condition"
 require "triggerable/conditions/field/exists"
 require "triggerable/conditions/field/in"
+require "triggerable/conditions/field/not_in"
 require "triggerable/conditions/field/or_equal_to"
 
 require "triggerable/conditions/predicate/predicate_condition"
