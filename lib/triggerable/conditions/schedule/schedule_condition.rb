@@ -18,7 +18,7 @@ module Triggerable
 
       # automation_time is Time.now rounded by Engine.interval
       def automation_time
-        i = Triggerable::Engine.interval
+        i = Triggerable::Engine.interval.to_i
         Time.at((Time.now.to_i / i) * i).utc
       end
     end
