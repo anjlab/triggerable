@@ -6,11 +6,13 @@ module Triggerable
       def initialize model, options, block
         super(model, options, block)
         @pass_relation = options[:pass_relation]
+        @unscoped = options[:unscoped]
       end
 
       def execute!
         ids = ActiveRecord::Base.connection.execute(build_query).map { |r| r['id'] }
-        models = model.where(id: ids)
+        models = @unscoped ? model.unscoped : model
+        models = models.where(id: ids)
 
         Triggerable::Engine.log(:debug, "#{desc}: processing #{models.count} object(s)")
 

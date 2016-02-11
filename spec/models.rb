@@ -14,6 +14,10 @@ class TestTask < ActiveRecord::Base
   end
 end
 
+class ScopedTestTask < TestTask
+  default_scope { where(id: nil) }
+end
+
 class ParentModel < ActiveRecord::Base
   has_many :child_models
 end
