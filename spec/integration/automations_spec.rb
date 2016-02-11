@@ -245,4 +245,23 @@ describe 'Automations' do
     task2.reload
     expect(task2.kind).to eq('other')
   end
+
+  it 'should unscope model for automation' do
+    constantize_time_now Time.utc 2012, 9, 1, 12, 00
+
+    ScopedTestTask.automation if: {and: [{updated_at: {after: 24.hours}}, {status: {is: :solved}}, {kind: {is: :service}}]} do
+      ScopedTestTask.create kind: 'follow up'
+    end
+
+    task = ScopedTestTask.create
+    expect(ScopedTestTask.unscoped.count).to eq(1)
+    task.update_attributes status: 'solved', kind: 'service'
+    expect(ScopedTestTask.unscoped.count).to eq(1)
+
+    constantize_time_now Time.utc 2012, 9, 2, 12, 00
+    Triggerable::Engine.run_automations(1.hour)
+
+    expect(ScopedTestTask.unscoped.count).to eq(2)
+    expect(ScopedTestTask.unscoped.last.kind).to eq('follow up')
+  end
 end
