@@ -249,7 +249,7 @@ describe 'Automations' do
   it 'should unscope model for automation' do
     constantize_time_now Time.utc 2012, 9, 1, 12, 00
 
-    ScopedTestTask.automation if: {and: [{updated_at: {after: 24.hours}}, {status: {is: :solved}}, {kind: {is: :service}}]} do
+    ScopedTestTask.automation if: {and: [{updated_at: {after: 24.hours}}, {status: {is: :solved}}, {kind: {is: :service}}]}, unscoped: true do
       ScopedTestTask.create kind: 'follow up'
     end
 
