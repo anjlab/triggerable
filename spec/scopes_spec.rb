@@ -11,7 +11,7 @@ describe 'Scopes' do
 
   context 'field conditions' do
     def model_ids_for condition_class, arg
-      table = Arel::Table.new(:parent_models)
+      table = ParentModel.arel_table
       scope = condition_class.new(:integer_field, arg).scope(table)
       query = table.where(scope).project(Arel.sql('id')).to_sql
 
@@ -59,7 +59,7 @@ describe 'Scopes' do
       and_condition = condition_class.new([])
       and_condition.conditions = [Triggerable::Conditions::Is.new(:integer_field, 1), Triggerable::Conditions::Is.new(:string_field, 'c')]
 
-      table = Arel::Table.new(:parent_models)
+      table = ParentModel.arel_table
       query = table.where(and_condition.scope(table)).project(Arel.sql('id')).to_sql
 
       ParentModel.connection.execute(query).map { |r| r['id'] }

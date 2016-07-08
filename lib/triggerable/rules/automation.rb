@@ -26,7 +26,7 @@ module Triggerable
       private
 
       def build_query
-        table = Arel::Table.new(model.table_name)
+        table = model.arel_table
         query = table.where(@condition.scope(table))
                      .project(Arel.sql('id'))
                      .to_sql

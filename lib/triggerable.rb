@@ -45,7 +45,7 @@ module Triggerable
     CALLBACKS.each do |callback|
       method_name = "run_#{callback}_triggers"
       define_method(method_name) { run_triggers(callback) }
-      send(callback, method_name)
+      send(callback, method_name.to_sym)
     end
 
     private
