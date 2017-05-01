@@ -25,6 +25,7 @@ module Triggerable
 
     def self.run_automations interval
       self.interval = interval
+      return unless Triggerable.enabled?
       automations.each(&:execute!)
     end
 
