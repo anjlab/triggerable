@@ -30,6 +30,18 @@ require "triggerable/actions/lambda_action"
 module Triggerable
   extend ActiveSupport::Concern
 
+  def self.enable!
+    @disabled = false
+  end
+
+   def self.disable!
+    @disabled = true
+  end
+
+  def self.enabled?
+    !@disabled
+  end
+
   included do
     CALLBACKS = [
       :before_create,
@@ -51,6 +63,7 @@ module Triggerable
     private
 
     def run_triggers callback
+      return unless Triggerable.enabled?
       Engine.triggers_for(self, callback).each { |t| t.execute!(self) }
       true
     end

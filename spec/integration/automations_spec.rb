@@ -264,4 +264,29 @@ describe 'Automations' do
     expect(ScopedTestTask.unscoped.count).to eq(2)
     expect(ScopedTestTask.unscoped.last.kind).to eq('follow up')
   end
+
+  context 'when Triggerable is disabled' do
+    before do
+      TestTask.automation if: {and: [{updated_at: {after: 24.hours}}, {status: {is: :solved}}, {kind: {is: :service}}]} do
+        TestTask.create kind: 'follow up'
+      end
+    end
+
+    after { Triggerable.enable! }
+
+    it 'does not run automations' do
+      Triggerable.disable!
+
+      expect {
+        constantize_time_now Time.utc 2012, 9, 1, 12, 00
+
+        task = TestTask.create
+        task.update_attributes status: 'solved', kind: 'service'
+
+        constantize_time_now Time.utc 2012, 9, 2, 12, 00
+        Triggerable::Engine.run_automations(1.hour)
+
+      }.to change(TestTask, :count).by(1)
+    end
+  end
 end

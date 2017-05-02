@@ -89,4 +89,26 @@ describe 'Short syntax' do
     task.update_attributes status: 'solved'
     expect(task.status).to eq('confirmed')
   end
+
+  context 'when Triggerable is disabled' do
+    before do
+      TestTask.trigger on: :after_create, if: {status: ['solved']} do
+        TestTask.create kind: 'follow up'
+      end
+    end
+
+    after { Triggerable.enable! }
+
+    it 'does not run actions' do
+      expect {
+        TestTask.create status: 'solved'
+      }.to change(TestTask, :count).by(2)
+
+      Triggerable.disable!
+
+      expect {
+        TestTask.create status: 'solved'
+      }.to change(TestTask, :count).by(1)
+    end
+  end
 end
